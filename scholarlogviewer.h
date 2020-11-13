@@ -3,8 +3,12 @@
 
 #include <QDragEnterEvent>
 #include <QMouseEvent>
+#include <QPushButton>
 #include <QStandardItemModel>
 #include <QWidget>
+
+#include "UtilityDefine.h"
+#include "fileprocessing/baselogprocessor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -12,16 +16,6 @@ namespace Ui
     class ScholarLogViewer;
 }
 QT_END_NAMESPACE
-
-struct LogRecordStruct
-{
-    QString time;
-    QString type;
-    QString thread_id;
-    QString function;
-    QString line_number;
-    QString data;
-};
 
 class ScholarLogViewer : public QWidget
 {
@@ -38,9 +32,23 @@ private slots:
 
     void on_btnClose_clicked();
 
+    void on_btnCompleted_clicked();
+
+    void on_seacherEdit_textChanged(const QString &arg1);
+
+    void on_cbxInfoType_currentIndexChanged(const QString &arg1);
+
+    void on_btnCloseContent_clicked();
+
+    void on_cbxLogType_currentIndexChanged(int index);
+
     void slot_actionTrigger();
 
     void slot_openLogFile();
+
+    void slot_onSearchWithKey(const QString &key);
+
+    void slot_onSwitchLogType(LogFileTypeEnum type);
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -50,11 +58,12 @@ protected:
     void dropEvent(QDropEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
 
+    bool eventFilter(QObject *obj, QEvent *event) override;
+
 private:
     void initCustomSearchBox();
-    void initTableView();
-    void createItemRecord(const QList<QString> &recordList);
-    void displayLogInfo();
+    void initTableHead();
+    void displayLogInfo(const QList<struct LogRecordStruct> &recordlist);
 
 private:
     Ui::ScholarLogViewer *ui;
@@ -63,7 +72,13 @@ private:
     QPoint m_point;
     QString openFilePath;
     QStandardItemModel *model;
+    QPushButton *pSearchButton;
 
     QList<struct LogRecordStruct> logRecordList;
+    QMap<QString, QList<struct LogRecordStruct>> recordTypeMap;
+    QList<struct LogRecordStruct> *pCurrentList;
+    LogFileTypeEnum currentLogType;
+
+    BaseLogProcessor *pLogProcessor;
 };
 #endif // SCHOLARLOGVIEWER_H
