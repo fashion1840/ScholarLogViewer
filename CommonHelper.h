@@ -7,7 +7,7 @@
 class CommonHelper
 {
 public:
-    static void setStyle(const QString &styleFile)
+    static void loadQss(const QString &styleFile)
     {
         QFile qss(styleFile);
         qss.open(QFile::ReadOnly);

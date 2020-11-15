@@ -21,6 +21,8 @@ public:
 
     virtual bool getItemRecord(QList<LogRecordStruct> &recordItemsList) = 0;
 
+    virtual TypeRecordMap &getRecordTypeMap() = 0;
+
     virtual QString getLastError() const = 0;
 };
 

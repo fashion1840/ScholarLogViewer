@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    //CommonHelper::setStyle("");
+    CommonHelper::loadQss(":/qss/style1.qss");
 
     ScholarLogViewer w;
     w.show();
