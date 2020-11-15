@@ -77,6 +77,8 @@ private:
 
     inline void setTitleName(const QString &fileName, const QString &filePath);
 
+    void updateItemContent(const QString &str1, const QString &str2);
+
 private:
     Ui::ScholarLogViewer *ui;
 

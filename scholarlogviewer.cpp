@@ -39,14 +39,12 @@ ScholarLogViewer::ScholarLogViewer(QWidget *parent)
     //去掉选择中 item 的虚线框
     ui->tableView->setItemDelegate(new QCommonDelegate);
 
-    logRecordList.clear();
-    recordTypeMap.clear();
-
     initCustomSearchBox();
 
     initTableHead();
 
     ui->seacherEdit->installEventFilter(this);
+    ui->tableView->installEventFilter(this);
 }
 
 ScholarLogViewer::~ScholarLogViewer()
@@ -143,6 +141,33 @@ bool ScholarLogViewer::eventFilter(QObject *obj, QEvent *event)
             if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return)
             {
                 QMetaObject::invokeMethod(this, "slot_onSearchWithKey", Qt::QueuedConnection, Q_ARG(QString, ui->seacherEdit->text()));
+            }
+        }
+    }
+    else if (obj == ui->tableView)
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() == Qt::Key_Down)
+            {
+                int row = ui->tableView->currentIndex().row() + 1;
+                if (row < model->rowCount())
+                {
+                    QString str1 = model->data(model->index(row, 3)).toString();
+                    QString str2 = model->data(model->index(row, model->columnCount() - 1)).toString();
+                    updateItemContent(str1, str2);
+                }
+            }
+            else if (keyEvent->key() == Qt::Key_Up)
+            {
+                int row = ui->tableView->currentIndex().row() - 1;
+                if (row >= 0)
+                {
+                    QString str1 = model->data(model->index(row, 3)).toString();
+                    QString str2 = model->data(model->index(row, model->columnCount() - 1)).toString();
+                    updateItemContent(str1, str2);
+                }
             }
         }
     }
@@ -342,6 +367,9 @@ void ScholarLogViewer::slot_openLogFile()
         return;
     }
 
+    logRecordList.clear();
+    recordTypeMap.clear();
+
     result = pLogProcessor->getItemRecord(logRecordList);
     if (!result)
     {
@@ -513,5 +541,14 @@ void ScholarLogViewer::on_tableView_clicked(const QModelIndex &index)
     if (!ui->contentWidget->isVisible())
         ui->contentWidget->setVisible(true);
 
+    ui->labFuncName->setText(model->data(model->index(index.row(), 3)).toString());
+
     ui->itemContent->setText(model->data(model->index(index.row(), model->columnCount() - 1)).toString());
+}
+
+void ScholarLogViewer::updateItemContent(const QString &str1, const QString &str2)
+{
+    ui->labFuncName->setText(str1);
+
+    ui->itemContent->setText(str2);
 }
