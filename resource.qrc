@@ -23,5 +23,8 @@
         <file>images/up2_blue.png</file>
         <file>images/up2_orange.png</file>
         <file>images/up2_white.png</file>
+        <file>images/max_blue.png</file>
+        <file>images/min_blue.png</file>
+        <file>images/normal_blue.png</file>
     </qresource>
 </RCC>

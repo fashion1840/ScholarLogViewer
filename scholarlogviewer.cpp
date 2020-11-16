@@ -189,9 +189,17 @@ void ScholarLogViewer::on_btnMinimize_clicked()
 void ScholarLogViewer::on_btnMaximize_clicked()
 {
     if (this->isMaximized())
+    {
         this->showNormal();
+        ui->btnMaximize->setStyleSheet("QPushButton{background-image:url(:/images/max_gray.png);}"
+                                       "QPushButton:hover{background-image:url(:/images/max_blue.png);}");
+    }
     else
+    {
         this->showMaximized();
+        ui->btnMaximize->setStyleSheet("QPushButton{background-image:url(:/images/normal_gray.png);}"
+                                       "QPushButton:hover{background-image:url(:/images/normal_blue.png);}");
+    }
 }
 
 ///
