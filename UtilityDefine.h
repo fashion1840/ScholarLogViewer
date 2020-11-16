@@ -14,24 +14,12 @@ const QString ACTION_STRING_SEPARATOR = ","; //打点日志分割符
 ///
 struct LogRecordStruct
 {
-    QString time;
-    QString type;
-    QString thread_id;
-    QString function;
-    QString line_number;
-    QString data;
-};
-
-///
-/// \brief 打点日志结构体
-///
-struct ActionLogInfo
-{
-    QString time;
-    QString type;
-    QString version;
-    QString acton_name;
-    QString action_data;
+    QString time;   //此条日志信息记录的时间
+    QString type;   //日志的类型
+    QString id;     //字段在不同的日志类型中表示不同的函义，程序日志为 thread id，打点日志为 version id，
+    QString name;   //函数名
+    QString number; //行号
+    QString data;   //日志信息
 };
 
 enum LogFileTypeEnum
@@ -40,5 +28,7 @@ enum LogFileTypeEnum
     LOG_ACTION,      //打点日志
     LOG_EVENT        //事件日志
 };
+
+typedef QMap<QString, QList<struct LogRecordStruct>> TypeRecordMap;
 
 #endif // UTILITYDEFINE_H

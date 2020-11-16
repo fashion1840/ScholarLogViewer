@@ -50,6 +50,8 @@ private slots:
 
     void slot_onSwitchLogType(LogFileTypeEnum type);
 
+    void on_tableView_clicked(const QModelIndex &index);
+
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
@@ -64,6 +66,9 @@ private:
     void initCustomSearchBox();
     void initTableHead();
     void displayLogInfo(const QList<struct LogRecordStruct> &recordlist);
+
+    void setProgromTabelHead();
+    void setActonTabelHead();
 
 private:
     Ui::ScholarLogViewer *ui;

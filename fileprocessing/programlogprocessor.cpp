@@ -77,7 +77,7 @@ bool ProgramLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
     //通过第一行log判断，分离出来的字段数不为5的判定为不支持的日志格式文件
     if (logLineList[0].split(PROGRAM_STRING_SEPARATOR).size() < PROGRAM_LOG_ITEM_SIZE)
     {
-        lastErrorMsg = "";
+        lastErrorMsg = "Is not support format file.";
         return false;
     }
 
@@ -97,10 +97,10 @@ bool ProgramLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
 
         item.time = list[0].section(" ", startNum);
         item.type = list[1].trimmed();
-        item.thread_id = list[2].trimmed();
+        item.id = list[2].trimmed();
         int idx = list[3].lastIndexOf(":");
-        item.function = list[3].left(idx);
-        item.line_number = list[3].right(list[3].size() - idx - 1);
+        item.name = list[3].left(idx);
+        item.number = list[3].right(list[3].size() - idx - 1);
         if (list.size() > PROGRAM_LOG_ITEM_SIZE)
             item.data = logLineList.at(i).section(PROGRAM_STRING_SEPARATOR, 4);
         else
