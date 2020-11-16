@@ -76,7 +76,9 @@ bool ActionLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
     //通过第一行log判断，分离出来的字段数不为5的判定为不支持的日志格式文件
     if (logLineList[0].split(ACTION_STRING_SEPARATOR).size() < ACTION_LOG_ITEM_SIZE)
     {
-        lastErrorMsg = "";
+
+        lastErrorMsg = "Is not support format file.";
+
         return false;
     }
 

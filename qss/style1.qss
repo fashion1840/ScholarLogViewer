@@ -1,0 +1,223 @@
+/* 全局设置 */
+* {
+    background-color: rgb(40, 44, 52);
+    font: 18px "微软雅黑";
+    color: rgb(169, 193, 208);
+    outline: none;
+}
+
+QPushButton {
+    color: rgb(169, 193, 208);
+    border: 1px solid rgb(128, 128, 128);
+    background-color: rgb(40, 44, 52);
+    border-radius: 4px;
+}
+
+QPushButton:hover {
+    border: 1px solid rgb(18, 150, 219);
+}
+
+/* 右侧内容显示框*/
+#contentWidget {
+    border: 1px solid rgb(130, 135, 144);
+}
+
+/*搜索样式设置*/
+QLineEdit {
+    border: 1px solid rgb(130, 135, 144);
+    border-radius: 4px;
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(18, 150, 219);
+}
+
+/* 自定义标题栏 */
+#titleFrame QPushButton {
+    color: rgb(250, 250, 250);
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+#titleFrame QPushButton:hover {
+    color: rgb(255, 170, 0);
+    background-color: rgba(255, 255, 255, 50);
+}
+
+#titleFrame QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 80);
+}
+
+QPushButton#btnMinimize {
+    background-image: url(:/images/min_gray.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+QPushButton#btnMinimize:hover {
+    background-image: url(:/images/min_orange.png);
+}
+
+QPushButton#btnMaximize {
+    background-image: url(:/images/max_gray.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+QPushButton#btnMaximize:hover {
+    background-image: url(:/images/max_orange.png);
+}
+
+QPushButton#btnClose {
+    background-image: url(:/images/close_gray.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+QPushButton#btnClose:hover {
+    background-image: url(:/images/close_red.png);
+}
+
+
+/* QTableView style */
+QTableView {
+    alternate-background-color: rgb(40, 44, 52);
+    background-color: rgb(40, 44, 52);
+}
+
+QTableView QHeaderView::section {
+    background-color: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 rgba(40, 44, 52, 127), stop:1 rgba(42, 48, 62, 75));
+    border-style: none;
+    border-bottom: 1px solid palette(dark);
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+QTableView::item:selected:disabled {
+    background: rgb(80, 80, 80);
+}
+
+
+/*  QComboBox style */
+QComboBox {
+    padding-left: 5px;
+    padding-right: 2px;
+    border: 1px solid rgb(130, 135, 144);
+    background-color: rgb(40, 44, 52);
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(18, 150, 219);
+}
+
+QComboBox:disabled {
+    color: rgb(230, 230, 230);
+    background-color: rgb(150, 150, 150);
+}
+
+QComboBox:editable {
+    background-color: rgb(100, 100, 100);
+}
+
+QComboBox:editable:disabled {
+    background-color: rgb(150, 150, 150);
+}
+
+QComboBox QAbstractItemView {
+    background-color: rgb(110, 110, 110);
+}
+
+QComboBox QAbstractItemView::item {
+    /*需要代码中-&gt;setView(new QListView(this));*/
+    height: 26px;
+    font: 18px "微软黑雅";
+}
+
+QComboBox QAbstractItemView::item:hover {
+    color: white;
+    background-color: rgb(18, 150, 219);
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background-color: rgb(18, 150, 219);
+}
+
+QComboBox::drop-down {
+    width: 20px;
+    height: 20px;
+    subcontrol-position: center right;
+    right: 2px;
+    border: 0;
+    background-color: transparent;
+}
+
+QComboBox::down-arrow {
+    /*替换三角小图标*/
+    width: 20px;
+    height: 20px;
+    border-image: url(:/images/down_white.png);
+}
+
+QComboBox::down-arrow:hover {
+    border-image: url(:/images/down_blue.png);
+}
+
+QComboBox::down-arrow:disabled {
+    border-image: url(:/images/down2_white.png);
+}
+
+/*滚动条样式*/
+/*滚动区域*/
+QScrollArea {
+    border: 0;
+    background-color: transparent;
+}
+
+/*滚动条 */
+QScrollBar:vertical {
+    /*竖向*/
+    width: 20px;
+    padding: 0 3px;
+    margin: 0;
+    background-color: transparent;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background-color: transparent;
+}
+
+QScrollBar::handle:vertical {
+    width: 10px;
+    min-height: 20px;
+    margin: 20px 0;
+    background-color: rgb(169, 193, 208);
+    border-radius:6px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: rgb(169, 202, 223);
+}
+
+QScrollBar::add-line:vertical {
+    height: 20px;
+    width: 20px;
+    subcontrol-position: bottom;
+    border-image: url(:/images/down2_white.png);
+}
+
+QScrollBar::sub-line:vertical {
+    height: 20px;
+    width: 20px;
+    subcontrol-position: top;
+    border-image: url(:/images/up2_white.png);
+}
+
+QScrollBar::sub-line:vertical:hover {
+    border-image: url(:/images/up2_blue.png);
+}
+
+QScrollBar::add-line:vertical:hover {
+    border-image: url(:/images/down2_blue.png);
+}

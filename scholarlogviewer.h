@@ -53,9 +53,14 @@ private slots:
     void on_tableView_clicked(const QModelIndex &index);
 
 protected:
+#if 0
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+#endif
+
+    // 进行鼠界面的拖动
+    void mousePressEvent(QMouseEvent *event) override;
 
     void dropEvent(QDropEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -69,6 +74,10 @@ private:
 
     void setProgromTabelHead();
     void setActonTabelHead();
+
+    inline void setTitleName(const QString &fileName, const QString &filePath);
+
+    void updateItemContent(const QString &str1, const QString &str2);
 
 private:
     Ui::ScholarLogViewer *ui;

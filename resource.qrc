@@ -5,5 +5,23 @@
         <file>images/search_leading.png</file>
         <file>images/delete.png</file>
         <file>images/delete_hover.png</file>
+        <file>qss/style1.qss</file>
+        <file>images/close_gray.png</file>
+        <file>images/close_red.png</file>
+        <file>images/max_gray.png</file>
+        <file>images/max_orange.png</file>
+        <file>images/min_gray.png</file>
+        <file>images/min_orange.png</file>
+        <file>images/normal_gray.png</file>
+        <file>images/normal_orange.png</file>
+        <file>images/down_orange.png</file>
+        <file>images/down_white.png</file>
+        <file>images/down_blue.png</file>
+        <file>images/down2_blue.png</file>
+        <file>images/down2_orange.png</file>
+        <file>images/down2_white.png</file>
+        <file>images/up2_blue.png</file>
+        <file>images/up2_orange.png</file>
+        <file>images/up2_white.png</file>
     </qresource>
 </RCC>
