@@ -53,14 +53,15 @@ private slots:
     void on_tableView_clicked(const QModelIndex &index);
 
 protected:
-#if 0
+#ifdef Q_OS_MAC
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 #endif
-
+#ifdef Q_OS_WIN
     // 进行鼠界面的拖动
     void mousePressEvent(QMouseEvent *event) override;
+#endif
 
     void dropEvent(QDropEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
