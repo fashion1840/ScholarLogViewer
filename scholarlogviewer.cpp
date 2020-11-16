@@ -61,9 +61,10 @@ ScholarLogViewer::~ScholarLogViewer()
 /// \brief 自定义标题栏移动
 /// \param event
 ///
+#ifdef Q_OS_WIN
 void ScholarLogViewer::mousePressEvent(QMouseEvent *event)
 {
-#ifdef Q_OS_WIN
+
     if (ReleaseCapture())
     {
         QWidget *pWindow = this->window();
@@ -73,10 +74,10 @@ void ScholarLogViewer::mousePressEvent(QMouseEvent *event)
         }
     }
     event->ignore();
-#endif
 }
+#endif
 
-#if 0
+#ifdef Q_OS_MAC
 ///
 /// brief 鼠标相对于窗体的位置 event->globalPos() - this->pos()
 ///
@@ -84,8 +85,13 @@ void ScholarLogViewer::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        m_bPressed = true;
         m_point = event->pos();
+        //if (m_point.x() <= 0 || m_point.y() <= 0)
+        //    return;
+        //if (m_point.x() >= ui->titleFrame->height() || m_point.y() >= ui->titleFrame->width())
+        //    return;
+
+        m_bPressed = true;
     }
 }
 
