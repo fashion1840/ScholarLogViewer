@@ -1,2 +1,2 @@
 # ScholarLogViewer
-Log viewer
+Scholar Log viewer
