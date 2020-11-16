@@ -1,7 +1,9 @@
 ﻿#ifndef SCHOLARLOGVIEWER_H
 #define SCHOLARLOGVIEWER_H
 
+#include <QAction>
 #include <QDragEnterEvent>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QStandardItemModel>
@@ -52,6 +54,10 @@ private slots:
 
     void on_tableView_clicked(const QModelIndex &index);
 
+    void slot_onLabelTrigger();
+
+    void slot_onShowLabelMenu(const QPoint &pos);
+
 protected:
 #ifdef Q_OS_MAC
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -71,6 +77,7 @@ protected:
 private:
     void initCustomSearchBox();
     void initTableHead();
+
     void displayLogInfo(const QList<struct LogRecordStruct> &recordlist);
 
     void setProgromTabelHead();
@@ -79,6 +86,10 @@ private:
     inline void setTitleName(const QString &fileName, const QString &filePath);
 
     void updateItemContent(const QString &str1, const QString &str2);
+
+    void setTypeCombobox(const QStringList &typelist);
+
+    void resetWidget();
 
 private:
     Ui::ScholarLogViewer *ui;
@@ -95,5 +106,8 @@ private:
     LogFileTypeEnum currentLogType;
 
     BaseLogProcessor *pLogProcessor;
+
+    QMenu *pLabelMenu;
+    QAction *pLabelAction;
 };
 #endif // SCHOLARLOGVIEWER_H

@@ -15,6 +15,8 @@ public:
 
     virtual QString getFilePath() = 0;
 
+    virtual QString getFileDir() = 0;
+
     virtual LogFileTypeEnum getLogType() = 0;
 
     virtual QList<QString> &getLogRecordList() = 0;

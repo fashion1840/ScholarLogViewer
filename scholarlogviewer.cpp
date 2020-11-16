@@ -3,6 +3,7 @@
 
 #include <QAction>
 #include <QDebug>
+#include <QDesktopServices>
 #include <QFileInfo>
 #include <QListView>
 #include <QMessageBox>
@@ -25,6 +26,8 @@ ScholarLogViewer::ScholarLogViewer(QWidget *parent)
     , pCurrentList(nullptr)
     , currentLogType(LOG_PROGRAM)
     , pLogProcessor(nullptr)
+    , pLabelMenu(nullptr)
+    , pLabelAction(nullptr)
 {
     ui->setupUi(this);
 
@@ -33,15 +36,18 @@ ScholarLogViewer::ScholarLogViewer(QWidget *parent)
 
     ui->cbxLogType->setView(new QListView());
     ui->cbxInfoType->setView(new QListView());
-
     ui->contentWidget->setVisible(false);
 
     //去掉选择中 item 的虚线框
     ui->tableView->setItemDelegate(new QCommonDelegate);
-
+    //初始化搜索框
     initCustomSearchBox();
-
+    //初始化 view 列标头信息
     initTableHead();
+
+    //给控件设置上下文菜单策略
+    ui->labFileName->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->labFileName, &QLabel::customContextMenuRequested, this, &ScholarLogViewer::slot_onShowLabelMenu);
 
     ui->seacherEdit->installEventFilter(this);
     ui->tableView->installEventFilter(this);
@@ -324,9 +330,9 @@ void ScholarLogViewer::setActonTabelHead()
     model->setHorizontalHeaderLabels(headList);
     ui->tableView->setModel(model);
 
-    ui->tableView->setColumnWidth(0, 150);
-    ui->tableView->setColumnWidth(1, 60);
-    ui->tableView->setColumnWidth(2, 80);
+    ui->tableView->setColumnWidth(0, 215);
+    ui->tableView->setColumnWidth(1, 80);
+    ui->tableView->setColumnWidth(2, 100);
     ui->tableView->setColumnWidth(3, 200);
     ui->tableView->setColumnWidth(4, 200);
     //ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents); //设定表头列宽不可变
@@ -396,6 +402,10 @@ void ScholarLogViewer::slot_openLogFile()
     recordTypeMap = pLogProcessor->getRecordTypeMap();
 
     displayLogInfo(logRecordList);
+
+    QList<QString> typeList = recordTypeMap.keys();
+    typeList.insert(0, "All");
+    setTypeCombobox(typeList);
 
     pCurrentList = &logRecordList;
 }
@@ -529,21 +539,18 @@ void ScholarLogViewer::slot_onSearchWithKey(const QString &key)
 
 void ScholarLogViewer::slot_onSwitchLogType(LogFileTypeEnum type)
 {
-    model->clear();
-    logRecordList.clear();
-    recordTypeMap.clear();
-    pCurrentList = nullptr;
+    resetWidget();
 
     switch (type)
     {
         case LOG_PROGRAM:
             setProgromTabelHead();
-            ui->cbxInfoType->setVisible(true);
+            //ui->cbxInfoType->setVisible(true);
 
             break;
         case LOG_ACTION:
             setActonTabelHead();
-            ui->cbxInfoType->setVisible(false);
+            //ui->cbxInfoType->setVisible(false);
             break;
         case LOG_EVENT:
             break;
@@ -560,9 +567,45 @@ void ScholarLogViewer::on_tableView_clicked(const QModelIndex &index)
     ui->itemContent->setText(model->data(model->index(index.row(), model->columnCount() - 1)).toString());
 }
 
+void ScholarLogViewer::slot_onLabelTrigger()
+{
+    QDesktopServices::openUrl(QUrl("file:" + pLogProcessor->getFileDir(), QUrl::TolerantMode));
+}
+
+void ScholarLogViewer::slot_onShowLabelMenu(const QPoint &pos)
+{
+    Q_UNUSED(pos)
+
+    pLabelMenu = new QMenu(ui->labFileName);
+    pLabelAction = new QAction(QStringLiteral("打开文件所在的目录"), this);
+    pLabelMenu->addAction(pLabelAction);
+
+    connect(pLabelAction, &QAction::triggered, this, &ScholarLogViewer::slot_onLabelTrigger);
+
+    pLabelMenu->exec(QCursor::pos());
+}
+
 void ScholarLogViewer::updateItemContent(const QString &str1, const QString &str2)
 {
     ui->labFuncName->setText(str1);
 
     ui->itemContent->setText(str2);
+}
+
+void ScholarLogViewer::setTypeCombobox(const QStringList &typelist)
+{
+    ui->cbxInfoType->clear();
+    ui->cbxInfoType->addItems(typelist);
+}
+
+void ScholarLogViewer::resetWidget()
+{
+    model->clear();
+    logRecordList.clear();
+    recordTypeMap.clear();
+    pCurrentList = nullptr;
+    ui->cbxInfoType->clear();
+    ui->labFileName->setText("ScholarLogViewer");
+    if (ui->contentWidget->isVisible())
+        ui->contentWidget->setVisible(false);
 }

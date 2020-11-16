@@ -21,6 +21,7 @@ bool ActionLogProcessor::openLogFile(const QString &logName)
     QFileInfo info(logName);
     logFileName = info.fileName();
     logFilePath = logName;
+    logFileDir = info.path();
 
     if (!fp.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -53,6 +54,11 @@ QString ActionLogProcessor::getFileName()
 QString ActionLogProcessor::getFilePath()
 {
     return logFilePath;
+}
+
+QString ActionLogProcessor::getFileDir()
+{
+    return logFileDir;
 }
 
 LogFileTypeEnum ActionLogProcessor::getLogType()
@@ -106,6 +112,8 @@ bool ActionLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
         recordItemsList.append(item);
     }
 
+    creatLogTypeInfo(recordItemsList);
+
     return true;
 }
 
@@ -139,4 +147,12 @@ void ActionLogProcessor::cleanData(QList<QString> &list)
 
     if (list.last().startsWith("</textarea>"))
         list.removeLast();
+}
+
+void ActionLogProcessor::creatLogTypeInfo(const QList<LogRecordStruct> &recordList)
+{
+    for (auto item : recordList)
+    {
+        recordTypeMap[item.type].append(item);
+    }
 }

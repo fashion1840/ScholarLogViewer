@@ -21,6 +21,7 @@ bool ProgramLogProcessor::openLogFile(const QString &logName)
     QFileInfo info(logName);
     logFileName = info.fileName();
     logFilePath = logName;
+    logFileDir = info.path();
 
     if (!fp.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -54,6 +55,11 @@ QString ProgramLogProcessor::getFileName()
 QString ProgramLogProcessor::getFilePath()
 {
     return logFilePath;
+}
+
+QString ProgramLogProcessor::getFileDir()
+{
+    return logFileDir;
 }
 
 LogFileTypeEnum ProgramLogProcessor::getLogType()
