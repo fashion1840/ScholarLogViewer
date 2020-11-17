@@ -28,6 +28,7 @@ ScholarLogViewer::ScholarLogViewer(QWidget *parent)
     , pLogProcessor(nullptr)
     , pLabelMenu(nullptr)
     , pLabelAction(nullptr)
+    , isFileOpened(false)
 {
     ui->setupUi(this);
 
@@ -352,6 +353,9 @@ void ScholarLogViewer::slot_actionTrigger()
 {
     ui->seacherEdit->clear();
 
+    if (!pCurrentList)
+        return;
+
     displayLogInfo(*pCurrentList);
 }
 
@@ -408,6 +412,8 @@ void ScholarLogViewer::slot_openLogFile()
     setTypeCombobox(typeList);
 
     pCurrentList = &logRecordList;
+
+    isFileOpened = true;
 }
 
 void ScholarLogViewer::displayLogInfo(const QList<LogRecordStruct> &recordlist)
@@ -448,7 +454,10 @@ void ScholarLogViewer::displayLogInfo(const QList<LogRecordStruct> &recordlist)
 void ScholarLogViewer::on_seacherEdit_textChanged(const QString &arg1)
 {
     if (arg1.isEmpty())
+    {
         pSearchButton->setVisible(false);
+        slot_actionTrigger();
+    }
     else
         pSearchButton->setVisible(true);
 }
@@ -482,7 +491,7 @@ void ScholarLogViewer::on_cbxLogType_currentIndexChanged(int index)
 
 void ScholarLogViewer::slot_onSearchWithKey(const QString &key)
 {
-    if (pCurrentList->isEmpty() || key.isEmpty())
+    if (key.isEmpty() || pCurrentList == nullptr || pCurrentList->isEmpty())
         return;
 
     //判断是否是过滤搜索的关键字内容
@@ -499,14 +508,14 @@ void ScholarLogViewer::slot_onSearchWithKey(const QString &key)
     {
         if (!isExcluds)
         {
-            if (item.name.contains(key) || item.data.contains(key))
+            if (item.name.contains(key, Qt::CaseInsensitive) || item.data.contains(key, Qt::CaseInsensitive))
             {
                 resultList.append(item);
             }
         }
         else
         {
-            if (!item.name.contains(key2) && !item.data.contains(key2))
+            if (!item.name.contains(key2, Qt::CaseInsensitive) && !item.data.contains(key2, Qt::CaseInsensitive))
                 resultList.append(item);
         }
     }
@@ -579,6 +588,8 @@ void ScholarLogViewer::slot_onShowLabelMenu(const QPoint &pos)
     pLabelMenu = new QMenu(ui->labFileName);
     pLabelAction = new QAction(QStringLiteral("打开文件所在的目录"), this);
     pLabelMenu->addAction(pLabelAction);
+    if (!isFileOpened)
+        pLabelAction->setEnabled(false);
 
     connect(pLabelAction, &QAction::triggered, this, &ScholarLogViewer::slot_onLabelTrigger);
 

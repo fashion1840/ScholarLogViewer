@@ -109,5 +109,7 @@ private:
 
     QMenu *pLabelMenu;
     QAction *pLabelAction;
+
+    bool isFileOpened;
 };
 #endif // SCHOLARLOGVIEWER_H

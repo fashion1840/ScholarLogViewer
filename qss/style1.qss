@@ -193,7 +193,7 @@ QScrollBar::handle:vertical {
     min-height: 20px;
     margin: 20px 0;
     background-color: rgb(169, 193, 208);
-    border-radius:6px;
+    border-radius: 6px;
 }
 
 QScrollBar::handle:vertical:hover {
@@ -220,4 +220,47 @@ QScrollBar::sub-line:vertical:hover {
 
 QScrollBar::add-line:vertical:hover {
     border-image: url(:/images/down2_blue.png);
+}
+
+/* Menu style */
+QMenu {
+    border: 1px solid rgb(128, 128, 128);
+    background-color: rgb(40, 44, 52);
+    margin: 0px;
+    padding: 0px;
+}
+
+QMenu::item {
+    margin: 0px;
+    padding: 0 20 0 10px;
+     font: 15px "微软雅黑"; 
+    min-height: 26px;
+    max-height: 28px;
+    /* color: rgb(240, 240, 240);
+    background-color: rgb(70, 70, 70); */
+}
+
+QSpacerItem {
+    background-color: rgb(0, 255, 0);
+}
+
+QMenu::item:disabled {
+    color: rgb(112,112,112);
+     background-color: rgb(40, 44, 52); 
+}
+
+QMenu::item:selected {
+    color: white;
+    background-color: rgb(51,153,255);
+}
+
+QMenu::item:selected:disabled {
+    color: rgb(112,112,112);
+    background-color: rgb(40, 44, 52); 
+}
+
+QMenu::separator {
+    /*分割线*/
+    height: 1px;
+    background: transparent;
 }
