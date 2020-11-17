@@ -6,9 +6,11 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QFileInfo>
+#include <QGraphicsDropShadowEffect>
 #include <QListView>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QPainter>
 #include <QTimer>
 
 #include "fileprocessing/actionlogprocessor.h"
