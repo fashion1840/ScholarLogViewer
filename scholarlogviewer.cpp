@@ -42,6 +42,8 @@ ScholarLogViewer::ScholarLogViewer(QWidget *parent)
     ui->cbxInfoType->setView(new QListView());
     ui->contentWidget->setVisible(false);
 
+    ui->labFuncName->adjustSize();
+
     //去掉选择中 item 的虚线框
     ui->tableView->setItemDelegate(new QCommonDelegate);
     //初始化搜索框
@@ -550,29 +552,6 @@ void ScholarLogViewer::slot_onSearchWithKey(const QString &key)
                 resultList.append(item);
         }
     }
-
-    /*
-    if (currentLogType == LOG_ACTION)
-    {
-        for (auto item : *pCurrentList)
-        {
-            if (item.name.contains(key))
-            {
-                resultList.append(item);
-            }
-        }
-    }
-    else
-    {
-        for (auto item : *pCurrentList)
-        {
-            if (item.data.contains(key))
-            {
-                resultList.append(item);
-            }
-        }
-    }
-    */
 
     displayLogInfo(resultList);
 }
