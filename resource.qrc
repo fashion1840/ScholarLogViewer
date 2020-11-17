@@ -26,5 +26,7 @@
         <file>images/max_blue.png</file>
         <file>images/min_blue.png</file>
         <file>images/normal_blue.png</file>
+        <file>images/gif/loading.gif</file>
+        <file>images/gif/search.gif</file>
     </qresource>
 </RCC>

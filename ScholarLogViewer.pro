@@ -28,8 +28,11 @@ SOURCES += \
     fileprocessing/actionlogprocessor.cpp \
     fileprocessing/programlogprocessor.cpp \
     fileprocessing/qcommondelegate.cpp \
+    imaskwidget.cpp \
     main.cpp \
-    scholarlogviewer.cpp
+    scholarlogviewer.cpp \
+    usertablemodel.cpp \
+    waitingwidget.cpp
 
 HEADERS += \
     CommonHelper.h \
@@ -38,10 +41,15 @@ HEADERS += \
     fileprocessing/baselogprocessor.h \
     fileprocessing/programlogprocessor.h \
     fileprocessing/qcommondelegate.h \
-    scholarlogviewer.h
+    imaskwidget.h \
+    scholarlogviewer.h \
+    usertablemodel.h \
+    waitingwidget.h
 
 FORMS += \
-    scholarlogviewer.ui
+    imaskwidget.ui \
+    scholarlogviewer.ui \
+    waitingwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

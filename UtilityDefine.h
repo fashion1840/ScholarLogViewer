@@ -31,4 +31,10 @@ enum LogFileTypeEnum
 
 typedef QMap<QString, QList<struct LogRecordStruct>> TypeRecordMap;
 
+enum WaitTipsEnum
+{
+    LOADING_MOVIE = 0,
+    SEACHING_MOVIE
+};
+
 #endif // UTILITYDEFINE_H

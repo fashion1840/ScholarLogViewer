@@ -2,12 +2,14 @@
 #include "ui_scholarlogviewer.h"
 
 #include <QAction>
+#include <QDateTime>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QFileInfo>
 #include <QListView>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QTimer>
 
 #include "fileprocessing/actionlogprocessor.h"
 #include "fileprocessing/programlogprocessor.h"
@@ -29,6 +31,7 @@ ScholarLogViewer::ScholarLogViewer(QWidget *parent)
     , pLabelMenu(nullptr)
     , pLabelAction(nullptr)
     , isFileOpened(false)
+    , waitfrm(nullptr)
 {
     ui->setupUi(this);
 
@@ -81,6 +84,14 @@ void ScholarLogViewer::mousePressEvent(QMouseEvent *event)
         }
     }
     event->ignore();
+}
+
+void ScholarLogViewer::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event)
+
+    if (waitfrm && waitfrm->isVisible())
+        waitfrm->resize(ui->infoFrame->width(), ui->infoFrame->height());
 }
 #endif
 
@@ -364,6 +375,7 @@ void ScholarLogViewer::slot_actionTrigger()
 ///
 void ScholarLogViewer::slot_openLogFile()
 {
+    qint64 startTimeStamp = QDateTime::currentMSecsSinceEpoch();
     qInfo() << "Open log file path:" << openFilePath;
 
     if (pLogProcessor)
@@ -371,6 +383,9 @@ void ScholarLogViewer::slot_openLogFile()
         delete pLogProcessor;
         pLogProcessor = nullptr;
     }
+
+    setViewerState(false);
+    showLoadingWidget(LOADING_MOVIE);
 
     switch (ui->cbxLogType->currentIndex())
     {
@@ -387,6 +402,8 @@ void ScholarLogViewer::slot_openLogFile()
     bool result = pLogProcessor->openLogFile(openFilePath);
     if (!result)
     {
+        closeLoadingWidget();
+        setViewerState(true);
         QMessageBox::critical(this, QStringLiteral("错误"), QStringLiteral("%1").arg(pLogProcessor->getLastError()));
         return;
     }
@@ -397,6 +414,8 @@ void ScholarLogViewer::slot_openLogFile()
     result = pLogProcessor->getItemRecord(logRecordList);
     if (!result)
     {
+        closeLoadingWidget();
+        setViewerState(true);
         QMessageBox::critical(this, QStringLiteral("错误"), QStringLiteral("%1").arg(pLogProcessor->getLastError()));
         return;
     }
@@ -407,13 +426,22 @@ void ScholarLogViewer::slot_openLogFile()
 
     displayLogInfo(logRecordList);
 
+    pCurrentList = &logRecordList;
+
+    isFileOpened = true;
+
     QList<QString> typeList = recordTypeMap.keys();
     typeList.insert(0, "All");
     setTypeCombobox(typeList);
 
-    pCurrentList = &logRecordList;
+    closeLoadingWidget();
 
-    isFileOpened = true;
+    setViewerState(true);
+
+    qint64 endTimeStamp = QDateTime::currentMSecsSinceEpoch();
+
+    qint64 intervalTime = endTimeStamp - startTimeStamp;
+    qInfo() << QStringLiteral("总共加载 %1 条记录，耗时：%2 秒。").arg(logRecordList.size()).arg(intervalTime / 1000);
 }
 
 void ScholarLogViewer::displayLogInfo(const QList<LogRecordStruct> &recordlist)
@@ -446,6 +474,9 @@ void ScholarLogViewer::displayLogInfo(const QList<LogRecordStruct> &recordlist)
         list << new QStandardItem(recordlist.at(i).data);
 
         model->insertRow(i, list);
+
+        //TODO:防止界面疆死
+        QCoreApplication::processEvents();
     }
 
     ui->tableView->setModel(model);
@@ -617,6 +648,33 @@ void ScholarLogViewer::resetWidget()
     pCurrentList = nullptr;
     ui->cbxInfoType->clear();
     ui->labFileName->setText("ScholarLogViewer");
+    if (ui->contentWidget->isVisible())
+        ui->contentWidget->setVisible(false);
+}
+
+void ScholarLogViewer::showLoadingWidget(WaitTipsEnum type)
+{
+    waitfrm = new WaitingWidget(ui->infoFrame);
+    waitfrm->setAttribute(Qt::WA_ShowModal, true);
+    waitfrm->setAttribute(Qt::WA_DeleteOnClose, true);
+    waitfrm->loading(type);
+    waitfrm->resize(ui->infoFrame->width(), ui->infoFrame->height());
+    waitfrm->show();
+}
+
+void ScholarLogViewer::closeLoadingWidget()
+{
+    if (!waitfrm)
+        return;
+
+    waitfrm->close();
+    delete waitfrm;
+    waitfrm = nullptr;
+}
+
+void ScholarLogViewer::setViewerState(bool state)
+{
+    ui->tableView->setVisible(state);
     if (ui->contentWidget->isVisible())
         ui->contentWidget->setVisible(false);
 }

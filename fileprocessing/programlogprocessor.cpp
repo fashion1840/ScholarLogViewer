@@ -1,5 +1,6 @@
 ﻿#include "programlogprocessor.h"
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
@@ -38,6 +39,9 @@ bool ProgramLogProcessor::openLogFile(const QString &logName)
         if (txt.isEmpty())
             continue;
         logLineList << txt;
+
+        //TODO:防止界面疆死
+        QCoreApplication::processEvents();
     }
 
     fp.close();
@@ -113,6 +117,9 @@ bool ProgramLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
             item.data = list[4].trimmed();
 
         recordItemsList.append(item);
+
+        //TODO:防止界面疆死
+        QCoreApplication::processEvents();
 
         creatLogTypeInfo(item);
     }

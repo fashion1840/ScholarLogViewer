@@ -11,6 +11,7 @@
 
 #include "UtilityDefine.h"
 #include "fileprocessing/baselogprocessor.h"
+#include "waitingwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -67,6 +68,8 @@ protected:
 #ifdef Q_OS_WIN
     // 进行鼠界面的拖动
     void mousePressEvent(QMouseEvent *event) override;
+
+    void resizeEvent(QResizeEvent *event) override;
 #endif
 
     void dropEvent(QDropEvent *event) override;
@@ -91,6 +94,11 @@ private:
 
     void resetWidget();
 
+    void showLoadingWidget(WaitTipsEnum type);
+    void closeLoadingWidget();
+
+    inline void setViewerState(bool state);
+
 private:
     Ui::ScholarLogViewer *ui;
 
@@ -111,5 +119,7 @@ private:
     QAction *pLabelAction;
 
     bool isFileOpened;
+
+    WaitingWidget *waitfrm;
 };
 #endif // SCHOLARLOGVIEWER_H
