@@ -49,6 +49,16 @@ QLineEdit:hover {
     background-color: rgba(255, 255, 255, 80);
 }
 
+QPushButton#btnConfig {
+    background-image: url(:/images/setup.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+QPushButton#btnConfig:hover {
+    background-image: url(:/images/setup_hover.png);
+}
+
 QPushButton#btnMinimize {
     background-image: url(:/images/min_gray.png);
     background-repeat: no-repeat;

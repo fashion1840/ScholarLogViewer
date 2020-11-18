@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    configurationwidget.cpp \
     fileprocessing/actionlogprocessor.cpp \
     fileprocessing/programlogprocessor.cpp \
     fileprocessing/qcommondelegate.cpp \
@@ -37,6 +38,7 @@ SOURCES += \
 HEADERS += \
     CommonHelper.h \
     UtilityDefine.h \
+    configurationwidget.h \
     fileprocessing/actionlogprocessor.h \
     fileprocessing/baselogprocessor.h \
     fileprocessing/programlogprocessor.h \
@@ -47,6 +49,7 @@ HEADERS += \
     waitingwidget.h
 
 FORMS += \
+    configurationwidget.ui \
     imaskwidget.ui \
     scholarlogviewer.ui \
     waitingwidget.ui

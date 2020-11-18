@@ -36,6 +36,7 @@ ScholarLogViewer::ScholarLogViewer(QWidget *parent)
     , isFileOpened(false)
     , waitfrm(nullptr)
     , bShowRightContent(false)
+    , pConfigWidget(nullptr)
 {
     ui->setupUi(this);
 
@@ -694,6 +695,9 @@ void ScholarLogViewer::on_btnExpandContent_clicked()
     */
 }
 
+///
+/// \brief 将选的字符串格式化为 JSON 格式
+///
 void ScholarLogViewer::on_btnFormat_clicked()
 {
     QString jsonStr = "";
@@ -705,4 +709,17 @@ void ScholarLogViewer::on_btnFormat_clicked()
         return;
 
     ui->itemContent->setText(jsonStr);
+}
+
+///
+/// \brief 打开设置窗口槽函数
+///
+void ScholarLogViewer::on_btnConfig_clicked()
+{
+    if (!pConfigWidget)
+    {
+        pConfigWidget = new ConfigurationWidget();
+    }
+
+    pConfigWidget->show();
 }

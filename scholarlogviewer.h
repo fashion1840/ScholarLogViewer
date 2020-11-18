@@ -10,6 +10,7 @@
 #include <QWidget>
 
 #include "UtilityDefine.h"
+#include "configurationwidget.h"
 #include "fileprocessing/baselogprocessor.h"
 #include "waitingwidget.h"
 
@@ -62,6 +63,8 @@ private slots:
     void on_btnExpandContent_clicked();
 
     void on_btnFormat_clicked();
+
+    void on_btnConfig_clicked();
 
 protected:
 #ifdef Q_OS_MAC
@@ -127,5 +130,6 @@ private:
     WaitingWidget *waitfrm;
 
     bool bShowRightContent;
+    ConfigurationWidget *pConfigWidget;
 };
 #endif // SCHOLARLOGVIEWER_H

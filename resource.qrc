@@ -32,5 +32,7 @@
         <file>images/gather_hover.png</file>
         <file>images/expand.png</file>
         <file>images/expand_hover.png</file>
+        <file>images/setup.png</file>
+        <file>images/setup_hover.png</file>
     </qresource>
 </RCC>

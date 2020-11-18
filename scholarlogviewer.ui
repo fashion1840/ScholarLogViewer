@@ -138,6 +138,40 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="btnConfig">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>设置</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="spacing">
          <number>4</number>
@@ -161,6 +195,15 @@
             <width>30</width>
             <height>30</height>
            </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="mouseTracking">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>最小化</string>
           </property>
           <property name="text">
            <string/>
@@ -187,6 +230,12 @@
             <height>30</height>
            </size>
           </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="toolTip">
+           <string>最大化</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -211,6 +260,12 @@
             <width>30</width>
             <height>30</height>
            </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="toolTip">
+           <string>关闭</string>
           </property>
           <property name="text">
            <string/>
@@ -563,6 +618,9 @@ border-image: url(:/images/gather_hover.png);
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="toolTip">
+              <string>格式化为JSON格式</string>
              </property>
              <property name="text">
               <string>格式化</string>
