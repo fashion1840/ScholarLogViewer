@@ -548,10 +548,10 @@ width: 20px;
 height: 20px;
 }
 QTableView::indicator:enabled:checked{
-image: ;
+
 }
 QTableView::indicator:enabled:unchecked{
-image: ;
+
 }
 /*菜单*/
 QPushButton::menu-indicator{/*setmenu*/

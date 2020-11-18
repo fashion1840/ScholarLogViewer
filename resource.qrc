@@ -28,5 +28,9 @@
         <file>images/normal_blue.png</file>
         <file>images/gif/loading.gif</file>
         <file>images/gif/search.gif</file>
+        <file>images/gather.png</file>
+        <file>images/gather_hover.png</file>
+        <file>images/expand.png</file>
+        <file>images/expand_hover.png</file>
     </qresource>
 </RCC>

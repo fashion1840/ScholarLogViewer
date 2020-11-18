@@ -59,6 +59,8 @@ private slots:
 
     void slot_onShowLabelMenu(const QPoint &pos);
 
+    void on_btnExpandContent_clicked();
+
 protected:
 #ifdef Q_OS_MAC
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -121,5 +123,7 @@ private:
     bool isFileOpened;
 
     WaitingWidget *waitfrm;
+
+    bool bShowRightContent;
 };
 #endif // SCHOLARLOGVIEWER_H

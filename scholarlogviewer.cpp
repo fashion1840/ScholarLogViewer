@@ -34,15 +34,20 @@ ScholarLogViewer::ScholarLogViewer(QWidget *parent)
     , pLabelAction(nullptr)
     , isFileOpened(false)
     , waitfrm(nullptr)
+    , bShowRightContent(false)
 {
     ui->setupUi(this);
 
     setWindowFlags(Qt::FramelessWindowHint);
     this->setAcceptDrops(true);
 
+    //自定义 QComboBox item 样式
     ui->cbxLogType->setView(new QListView());
     ui->cbxInfoType->setView(new QListView());
+
+    //默认隐藏内容显示窗口
     ui->contentWidget->setVisible(false);
+    ui->btnCloseContent->setVisible(false);
 
     ui->labFuncName->adjustSize();
 
@@ -581,7 +586,7 @@ void ScholarLogViewer::slot_onSwitchLogType(LogFileTypeEnum type)
 void ScholarLogViewer::on_tableView_clicked(const QModelIndex &index)
 {
     if (!ui->contentWidget->isVisible())
-        ui->contentWidget->setVisible(true);
+        return;
 
     ui->labFuncName->setText(model->data(model->index(index.row(), 3)).toString());
 
@@ -658,4 +663,32 @@ void ScholarLogViewer::setViewerState(bool state)
     ui->tableView->setVisible(state);
     if (ui->contentWidget->isVisible())
         ui->contentWidget->setVisible(false);
+}
+
+void ScholarLogViewer::on_btnExpandContent_clicked()
+{
+    bShowRightContent = !bShowRightContent;
+    ui->contentWidget->setVisible(bShowRightContent);
+
+    QModelIndexList list = ui->tableView->selectionModel()->selectedRows();
+    if (list.count() <= 0)
+        return;
+
+    auto index = ui->tableView->selectionModel()->currentIndex();
+    ui->labFuncName->setText(model->data(model->index(index.row(), 3)).toString());
+    ui->itemContent->setText(model->data(model->index(index.row(), model->columnCount() - 1)).toString());
+
+    /*
+     QString styleStr;
+    if (bShowRightContent)
+    {
+        styleStr = "QPushButton{border-image: url(:/images/expand.png);}QPushButton:hover{border-image: url(:/images/expand_hover.png);}";
+    }
+    else
+    {
+        styleStr = "QPushButton{border-image: url(:/images/gather.png);}QPushButton:hover{border-image: url(:/images/gather_hover.png);}";
+    }
+
+    ui->btnExpandContent->setStyleSheet(styleStr);
+    */
 }
