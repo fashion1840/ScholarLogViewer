@@ -441,7 +441,7 @@ void ScholarLogViewer::slot_openLogFile()
     qint64 endTimeStamp = QDateTime::currentMSecsSinceEpoch();
 
     qint64 intervalTime = endTimeStamp - startTimeStamp;
-    qInfo() << QStringLiteral("总共加载 %1 条记录，耗时：%2 秒。").arg(logRecordList.size()).arg(intervalTime / 1000);
+    qInfo() << QStringLiteral("总共加载 %1 条记录，耗时：%2 毫秒。").arg(logRecordList.size()).arg(intervalTime);
 }
 
 void ScholarLogViewer::displayLogInfo(const QList<LogRecordStruct> &recordlist)
