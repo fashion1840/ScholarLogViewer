@@ -264,3 +264,15 @@ QMenu::separator {
     height: 1px;
     background: transparent;
 }
+
+/* QTextEdit style*/
+QTextEdit{
+    border:none;
+}
+
+/* QToolTip style */
+QToolTip{
+    border-style: none;
+    background-color:rgb(40, 44, 52);
+    color: rgb(169, 193, 208);
+}

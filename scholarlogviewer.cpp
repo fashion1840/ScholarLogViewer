@@ -6,9 +6,11 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QFileInfo>
+#include <QGraphicsDropShadowEffect>
 #include <QListView>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QPainter>
 #include <QTimer>
 
 #include "fileprocessing/actionlogprocessor.h"
@@ -41,6 +43,8 @@ ScholarLogViewer::ScholarLogViewer(QWidget *parent)
     ui->cbxLogType->setView(new QListView());
     ui->cbxInfoType->setView(new QListView());
     ui->contentWidget->setVisible(false);
+
+    ui->labFuncName->adjustSize();
 
     //去掉选择中 item 的虚线框
     ui->tableView->setItemDelegate(new QCommonDelegate);
@@ -550,29 +554,6 @@ void ScholarLogViewer::slot_onSearchWithKey(const QString &key)
                 resultList.append(item);
         }
     }
-
-    /*
-    if (currentLogType == LOG_ACTION)
-    {
-        for (auto item : *pCurrentList)
-        {
-            if (item.name.contains(key))
-            {
-                resultList.append(item);
-            }
-        }
-    }
-    else
-    {
-        for (auto item : *pCurrentList)
-        {
-            if (item.data.contains(key))
-            {
-                resultList.append(item);
-            }
-        }
-    }
-    */
 
     displayLogInfo(resultList);
 }
