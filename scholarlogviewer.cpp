@@ -13,6 +13,7 @@
 #include <QPainter>
 #include <QTimer>
 
+#include "CommonHelper.h"
 #include "fileprocessing/actionlogprocessor.h"
 #include "fileprocessing/programlogprocessor.h"
 #include "fileprocessing/qcommondelegate.h"
@@ -691,4 +692,17 @@ void ScholarLogViewer::on_btnExpandContent_clicked()
 
     ui->btnExpandContent->setStyleSheet(styleStr);
     */
+}
+
+void ScholarLogViewer::on_btnFormat_clicked()
+{
+    QString jsonStr = "";
+    QString str = ui->itemContent->textCursor().selectedText().trimmed();
+    if (str.isEmpty() || str.isNull())
+        return;
+    bool bRet = CommonHelper::stringToJsonFormat(str, jsonStr);
+    if (!bRet)
+        return;
+
+    ui->itemContent->setText(jsonStr);
 }
