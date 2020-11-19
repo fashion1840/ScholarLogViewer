@@ -11,6 +11,21 @@ macx{
 TARGET = ScholarlogViewer
 ICON = logo.icns
 QMAKE_INFO_PLIST = Info.plist
+
+SOURCES += \
+    mac/macminimizewidget.mm
+
+HEADERS += \
+    mac/macminimizewidget.h
+
+LIBS += -framework CoreServices
+LIBS += -framework Foundation
+LIBS += -framework CoreFoundation
+LIBS += -framework Carbon
+LIBS += -lobjc
+LIBS += -framework AppKit
+DEFINES += OBJC_OLD_DISPATCH_PROTOTYPES
+
 }
 
 # The following define makes your compiler emit warnings if you use

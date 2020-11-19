@@ -21,6 +21,8 @@
 #ifdef Q_OS_WIN
 #pragma comment(lib, "user32.lib")
 #include <qt_windows.h>
+#else
+#include "mac/macminimizewidget.h"
 #endif
 
 ScholarLogViewer::ScholarLogViewer(QWidget *parent)
@@ -39,7 +41,11 @@ ScholarLogViewer::ScholarLogViewer(QWidget *parent)
 {
     ui->setupUi(this);
 
-    setWindowFlags(Qt::FramelessWindowHint);
+    setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+#ifdef Q_OS_MACOS
+    MacMinimizeWidget::AllowMinimizeForFramelessWindow(this);
+#endif
+
     this->setAcceptDrops(true);
 
     //自定义 QComboBox item 样式
@@ -214,7 +220,8 @@ bool ScholarLogViewer::eventFilter(QObject *obj, QEvent *event)
 ///
 void ScholarLogViewer::on_btnMinimize_clicked()
 {
-    this->showMinimized();
+    //    this->showMinimized();
+    setWindowState(Qt::WindowMinimized);
 }
 
 ///
