@@ -174,7 +174,7 @@ QScrollArea {
     background-color: transparent;
 }
 
-/*滚动条 */
+/*滚动条 - 坚向*/
 QScrollBar:vertical {
     /*竖向*/
     width: 20px;
@@ -219,6 +219,53 @@ QScrollBar::sub-line:vertical:hover {
 }
 
 QScrollBar::add-line:vertical:hover {
+    border-image: url(:/images/down2_blue.png);
+}
+
+/*滚动条 - 横向*/
+QScrollBar:horizontal {
+    width: 20px;
+    padding: 0 3px;
+    margin: 0;
+    background-color: transparent;
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background-color: transparent;
+}
+
+QScrollBar::handle:horizontal {
+    width: 10px;
+    min-height: 20px;
+    margin: 20px 0;
+    background-color: rgb(169, 193, 208);
+    border-radius: 6px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: rgb(169, 202, 223);
+}
+
+QScrollBar::add-line:horizontal {
+    height: 20px;
+    width: 20px;
+    subcontrol-position: bottom;
+    border-image: url(:/images/down2_white.png);
+}
+
+QScrollBar::sub-line:horizontal {
+    height: 20px;
+    width: 20px;
+    subcontrol-position: top;
+    border-image: url(:/images/up2_white.png);
+}
+
+QScrollBar::sub-line:horizontal:hover {
+    border-image: url(:/images/up2_blue.png);
+}
+
+QScrollBar::add-line:horizontal:hover {
     border-image: url(:/images/down2_blue.png);
 }
 
