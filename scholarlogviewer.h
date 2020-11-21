@@ -89,6 +89,8 @@ private:
 
     void setProgromTabelHead();
     void setActonTabelHead();
+    void setIosTabelHead();
+    void setAndroidTabelHead();
 
     inline void setTitleName(const QString &fileName, const QString &filePath);
 
@@ -102,6 +104,8 @@ private:
     void closeLoadingWidget();
 
     inline void setViewerState(bool state);
+
+    void setTabelHeadWithType(LogFileTypeEnum type);
 
 private:
     Ui::ScholarLogViewer *ui;

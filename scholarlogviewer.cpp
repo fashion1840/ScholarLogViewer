@@ -15,6 +15,8 @@
 
 #include "CommonHelper.h"
 #include "fileprocessing/actionlogprocessor.h"
+#include "fileprocessing/androidlogprocessor.h"
+#include "fileprocessing/ioslogprocessor.h"
 #include "fileprocessing/programlogprocessor.h"
 #include "fileprocessing/qcommondelegate.h"
 
@@ -270,6 +272,7 @@ void ScholarLogViewer::initCustomSearchBox()
     pSearchButton->setFixedSize(16, 16);
     pSearchButton->setStyleSheet("QPushButton{border-image:url(:/images/delete.png);}"
                                  "QPushButton:hover{border-image:url(:/images/delete_hover.png);}");
+    pSearchButton->setCursor(Qt::PointingHandCursor);
 
     QMargins margins = ui->seacherEdit->textMargins();
     ui->seacherEdit->setTextMargins(margins.left(), margins.top(), pSearchButton->width(), margins.bottom());
@@ -302,17 +305,7 @@ void ScholarLogViewer::initTableHead()
     //设置表头
     model = new QStandardItemModel();
 
-    switch (currentLogType)
-    {
-        case LOG_PROGRAM:
-            setProgromTabelHead();
-            break;
-        case LOG_ACTION:
-            setActonTabelHead();
-            break;
-        case LOG_EVENT:
-            break;
-    }
+    setTabelHeadWithType(currentLogType);
 
     //设置表格属性
     ui->tableView->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter); //表头信息显示居中
@@ -347,9 +340,52 @@ void ScholarLogViewer::setProgromTabelHead()
     ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch); //设定第x列表头弹性拉伸
 }
 
+void ScholarLogViewer::setIosTabelHead()
+{
+    QStringList headList;
+    headList << "Time"
+             << "Type"
+             << "Class"
+             << "Function"
+             << "Line"
+             << "Data";
+    model->setHorizontalHeaderLabels(headList);
+    ui->tableView->setModel(model);
+
+    ui->tableView->setColumnWidth(0, 230);
+    ui->tableView->setColumnWidth(1, 80);
+    ui->tableView->setColumnWidth(2, 120);
+    ui->tableView->setColumnWidth(3, 200);
+    ui->tableView->setColumnWidth(4, 60);
+    ui->tableView->setColumnWidth(5, 200);
+    //ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents); //设定表头列宽不可变
+    ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch); //设定第x列表头弹性拉伸
+}
+
+void ScholarLogViewer::setAndroidTabelHead()
+{
+    QStringList headList;
+    headList << "Time"
+             << "Type"
+             << "Thread id"
+             << "Model"
+             << "Function"
+             << "Data";
+    model->setHorizontalHeaderLabels(headList);
+    ui->tableView->setModel(model);
+
+    ui->tableView->setColumnWidth(0, 230);
+    ui->tableView->setColumnWidth(1, 80);
+    ui->tableView->setColumnWidth(2, 100);
+    ui->tableView->setColumnWidth(3, 120);
+    ui->tableView->setColumnWidth(4, 200);
+    ui->tableView->setColumnWidth(5, 200);
+    //ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents); //设定表头列宽不可变
+    ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch); //设定第x列表头弹性拉伸
+}
+
 void ScholarLogViewer::setActonTabelHead()
 {
-
     QStringList headList;
     headList << "Time"
              << "Type"
@@ -408,6 +444,12 @@ void ScholarLogViewer::slot_openLogFile()
     {
         case LOG_PROGRAM:
             pLogProcessor = new ProgramLogProcessor();
+            break;
+        case LOG_IOS:
+            pLogProcessor = new IosLogProcessor();
+            break;
+        case LOG_ANDROID:
+            pLogProcessor = new AndroidLogProcessor();
             break;
         case LOG_ACTION:
             pLogProcessor = new ActionLogProcessor();
@@ -481,7 +523,7 @@ void ScholarLogViewer::displayLogInfo(const QList<LogRecordStruct> &recordlist)
         list << item;
         //list << new QStandardItem(recordlist.at(i).thread_id);
         list << new QStandardItem(recordlist.at(i).name);
-        if (currentLogType == LOG_PROGRAM)
+        if (currentLogType == LOG_PROGRAM || currentLogType == LOG_IOS || currentLogType == LOG_ANDROID)
         {
             item = new QStandardItem(recordlist.at(i).number);
             item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -575,20 +617,7 @@ void ScholarLogViewer::slot_onSwitchLogType(LogFileTypeEnum type)
 {
     resetWidget();
 
-    switch (type)
-    {
-        case LOG_PROGRAM:
-            setProgromTabelHead();
-            //ui->cbxInfoType->setVisible(true);
-
-            break;
-        case LOG_ACTION:
-            setActonTabelHead();
-            //ui->cbxInfoType->setVisible(false);
-            break;
-        case LOG_EVENT:
-            break;
-    }
+    setTabelHeadWithType(type);
 }
 
 void ScholarLogViewer::on_tableView_clicked(const QModelIndex &index)
@@ -671,6 +700,27 @@ void ScholarLogViewer::setViewerState(bool state)
     ui->tableView->setVisible(state);
     if (ui->contentWidget->isVisible())
         ui->contentWidget->setVisible(false);
+}
+
+void ScholarLogViewer::setTabelHeadWithType(LogFileTypeEnum type)
+{
+    switch (type)
+    {
+        case LOG_PROGRAM:
+            setProgromTabelHead();
+            break;
+        case LOG_IOS:
+            setIosTabelHead();
+            break;
+        case LOG_ANDROID:
+            setAndroidTabelHead();
+            break;
+        case LOG_ACTION:
+            setActonTabelHead();
+            break;
+        case LOG_EVENT:
+            break;
+    }
 }
 
 void ScholarLogViewer::on_btnExpandContent_clicked()

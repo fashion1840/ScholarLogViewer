@@ -41,6 +41,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     fileprocessing/actionlogprocessor.cpp \
+    fileprocessing/androidlogprocessor.cpp \
+    fileprocessing/ioslogprocessor.cpp \
     fileprocessing/programlogprocessor.cpp \
     fileprocessing/qcommondelegate.cpp \
     imaskwidget.cpp \
@@ -53,7 +55,9 @@ HEADERS += \
     CommonHelper.h \
     UtilityDefine.h \
     fileprocessing/actionlogprocessor.h \
+    fileprocessing/androidlogprocessor.h \
     fileprocessing/baselogprocessor.h \
+    fileprocessing/ioslogprocessor.h \
     fileprocessing/programlogprocessor.h \
     fileprocessing/qcommondelegate.h \
     imaskwidget.h \

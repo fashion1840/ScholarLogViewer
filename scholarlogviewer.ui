@@ -162,6 +162,9 @@
             <height>30</height>
            </size>
           </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -187,6 +190,9 @@
             <height>30</height>
            </size>
           </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -211,6 +217,9 @@
             <width>30</width>
             <height>30</height>
            </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="text">
            <string/>
@@ -268,7 +277,17 @@
         </property>
         <item>
          <property name="text">
-          <string>程序日志</string>
+          <string>PC日志</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>iOS日志</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Android日志</string>
          </property>
         </item>
         <item>
@@ -333,6 +352,9 @@
           <height>32</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="toolTip">
          <string>搜索</string>
         </property>
@@ -368,6 +390,9 @@ border-image: url(:/images/search_hover.png);
           <width>34</width>
           <height>34</height>
          </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="toolTip">
          <string>分栏</string>
@@ -563,6 +588,9 @@ border-image: url(:/images/gather_hover.png);
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="text">
               <string>格式化</string>
