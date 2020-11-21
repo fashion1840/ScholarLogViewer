@@ -34,5 +34,7 @@
         <file>images/expand_hover.png</file>
         <file>images/setup.png</file>
         <file>images/setup_hover.png</file>
+        <file>images/setupclose.png</file>
+        <file>images/setupclose_hover.png</file>
     </qresource>
 </RCC>

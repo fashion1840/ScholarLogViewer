@@ -3,8 +3,9 @@
 
 #include <QWidget>
 
-namespace Ui {
-class ConfigurationWidget;
+namespace Ui
+{
+    class ConfigurationWidget;
 }
 
 class ConfigurationWidget : public QWidget
@@ -14,6 +15,10 @@ class ConfigurationWidget : public QWidget
 public:
     explicit ConfigurationWidget(QWidget *parent = nullptr);
     ~ConfigurationWidget();
+
+private slots:
+
+    void on_btnConfigClose_clicked();
 
 private:
     Ui::ConfigurationWidget *ui;

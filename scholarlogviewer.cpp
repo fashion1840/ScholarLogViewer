@@ -387,6 +387,7 @@ void ScholarLogViewer::slot_actionTrigger()
 void ScholarLogViewer::slot_openLogFile()
 {
     qint64 startTimeStamp = QDateTime::currentMSecsSinceEpoch();
+    //qint64 startTimeStamp = CommonHelper::getCurrentTimeOfMillisecond();
     qInfo() << "Open log file path:" << openFilePath;
 
     if (pLogProcessor)
@@ -450,8 +451,9 @@ void ScholarLogViewer::slot_openLogFile()
     setViewerState(true);
 
     qint64 endTimeStamp = QDateTime::currentMSecsSinceEpoch();
-
+    //qint64 endTimeStamp = CommonHelper::getCurrentTimeOfMillisecond();
     qint64 intervalTime = endTimeStamp - startTimeStamp;
+
     qInfo() << QStringLiteral("总共加载 %1 条记录，耗时：%2 毫秒。").arg(logRecordList.size()).arg(intervalTime);
 }
 
