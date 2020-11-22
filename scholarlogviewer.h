@@ -85,7 +85,7 @@ private:
     void initCustomSearchBox();
     void initTableHead();
 
-    void displayLogInfo(const QList<struct LogRecordStruct> &recordlist);
+    void displayLogInfo(const QList<QStringList> &recordlist);
 
     void setProgromTabelHead();
     void setActonTabelHead();
@@ -116,9 +116,9 @@ private:
     QStandardItemModel *model;
     QPushButton *pSearchButton;
 
-    QList<struct LogRecordStruct> logRecordList;
-    QMap<QString, QList<struct LogRecordStruct>> recordTypeMap;
-    QList<struct LogRecordStruct> *pCurrentList;
+    QList<QStringList> logRecordList;
+    QMap<QString, QList<QStringList>> recordTypeMap;
+    QList<QStringList> *pCurrentList;
     LogFileTypeEnum currentLogType;
 
     BaseLogProcessor *pLogProcessor;

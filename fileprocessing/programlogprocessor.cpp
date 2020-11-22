@@ -76,7 +76,7 @@ QList<QString> &ProgramLogProcessor::getLogRecordList()
     return logLineList;
 }
 
-bool ProgramLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
+bool ProgramLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
 {
     if (logLineList.isEmpty())
     {
@@ -100,21 +100,21 @@ bool ProgramLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
             continue;
         }
 
-        struct LogRecordStruct item;
+        QStringList item;
         int startNum = 1;
         if (list[0].contains("|"))
             startNum = 2;
 
-        item.time = list[0].section(" ", startNum);
-        item.type = list[1].trimmed();
-        item.id = list[2].trimmed();
+        item << list[0].section(" ", startNum);
+        item << list[1].trimmed();
+        item << list[2].trimmed();
         int idx = list[3].lastIndexOf(":");
-        item.name = list[3].left(idx);
-        item.number = list[3].right(list[3].size() - idx - 1);
+        item << list[3].left(idx);
+        item << list[3].right(list[3].size() - idx - 1);
         if (list.size() > PROGRAM_LOG_ITEM_SIZE)
-            item.data = logLineList.at(i).section(PROGRAM_STRING_SEPARATOR, 4);
+            item << logLineList.at(i).section(PROGRAM_STRING_SEPARATOR, 4);
         else
-            item.data = list[4].trimmed();
+            item << list[4].trimmed();
 
         recordItemsList.append(item);
 
@@ -159,49 +159,49 @@ void ProgramLogProcessor::cleanData(QList<QString> &list)
         list.removeLast();
 }
 
-void ProgramLogProcessor::creatLogTypeInfo(const LogRecordStruct &record)
+void ProgramLogProcessor::creatLogTypeInfo(const QStringList &record)
 {
-
-    if (record.type == "I")
+    QString type = record.at(1);
+    if (type == "I")
     {
         if (recordTypeMap.contains("Info"))
             recordTypeMap["Info"].append(record);
         else
         {
-            QList<struct LogRecordStruct> value;
+            QList<QStringList> value;
             value.append(record);
             recordTypeMap.insert("Info", value);
         }
     }
-    else if (record.type == "D")
+    else if (type == "D")
     {
         if (recordTypeMap.contains("Debug"))
             recordTypeMap["Debug"].append(record);
         else
         {
-            QList<struct LogRecordStruct> value;
+            QList<QStringList> value;
             value.append(record);
             recordTypeMap.insert("Debug", value);
         }
     }
-    else if (record.type == "W")
+    else if (type == "W")
     {
         if (recordTypeMap.contains("Warning"))
             recordTypeMap["Warning"].append(record);
         else
         {
-            QList<struct LogRecordStruct> value;
+            QList<QStringList> value;
             value.append(record);
             recordTypeMap.insert("Warning", value);
         }
     }
-    else if (record.type == "E")
+    else if (type == "E")
     {
         if (recordTypeMap.contains("Error"))
             recordTypeMap["Error"].append(record);
         else
         {
-            QList<struct LogRecordStruct> value;
+            QList<QStringList> value;
             value.append(record);
             recordTypeMap.insert("Error", value);
         }

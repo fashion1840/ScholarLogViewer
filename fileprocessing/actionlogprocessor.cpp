@@ -71,7 +71,7 @@ QList<QString> &ActionLogProcessor::getLogRecordList()
     return logLineList;
 }
 
-bool ActionLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
+bool ActionLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
 {
     if (logLineList.isEmpty())
     {
@@ -97,17 +97,17 @@ bool ActionLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
             continue;
         }
 
-        struct LogRecordStruct item;
+        QStringList item;
 
-        item.time = list[0].section("|", 0, 0).trimmed();
-        item.type = list[1].trimmed();
-        item.id = list[3].trimmed();
-        item.name = list[5];
-        item.number = "0";
+        item << list[0].section("|", 0, 0).trimmed();
+        item << list[1].trimmed();
+        item << list[3].trimmed();
+        item << list[5];
+        item << "0";
         if (list.size() > ACTION_LOG_ITEM_SIZE)
-            item.data = logLineList.at(i).section(ACTION_STRING_SEPARATOR, 6);
+            item << logLineList.at(i).section(ACTION_STRING_SEPARATOR, 6);
         else
-            item.data = list[6].trimmed();
+            item << list[6].trimmed();
 
         recordItemsList.append(item);
     }
@@ -149,10 +149,10 @@ void ActionLogProcessor::cleanData(QList<QString> &list)
         list.removeLast();
 }
 
-void ActionLogProcessor::creatLogTypeInfo(const QList<LogRecordStruct> &recordList)
+void ActionLogProcessor::creatLogTypeInfo(const QList<QStringList> &recordList)
 {
     for (auto item : recordList)
     {
-        recordTypeMap[item.type].append(item);
+        recordTypeMap[item.at(1)].append(item);
     }
 }

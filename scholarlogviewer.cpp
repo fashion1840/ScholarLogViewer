@@ -503,7 +503,7 @@ void ScholarLogViewer::slot_openLogFile()
     qInfo() << QStringLiteral("总共加载 %1 条记录，耗时：%2 毫秒。").arg(logRecordList.size()).arg(intervalTime);
 }
 
-void ScholarLogViewer::displayLogInfo(const QList<LogRecordStruct> &recordlist)
+void ScholarLogViewer::displayLogInfo(const QList<QStringList> &recordlist)
 {
     //清空列表内容
     model->removeRows(0, model->rowCount());
@@ -511,26 +511,27 @@ void ScholarLogViewer::displayLogInfo(const QList<LogRecordStruct> &recordlist)
     if (recordlist.size() == 0)
         return;
 
-    for (int i = 0; i < recordlist.count(); i++)
+    for (int i = 0; i < recordlist.size(); i++)
     {
+        QStringList itemList = recordlist.at(i);
         QList<QStandardItem *> list;
-        list << new QStandardItem(recordlist.at(i).time);
-        QStandardItem *item = new QStandardItem(recordlist.at(i).type);
+        list << new QStandardItem(itemList.at(0));
+        QStandardItem *item = new QStandardItem(itemList.at(1));
         item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         list << item;
-        item = new QStandardItem(recordlist.at(i).id);
+        item = new QStandardItem(itemList.at(2));
         item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         list << item;
-        //list << new QStandardItem(recordlist.at(i).thread_id);
-        list << new QStandardItem(recordlist.at(i).name);
+        //list << new QStandardItem(itemList.thread_id);
+        list << new QStandardItem(itemList.at(3));
         if (currentLogType == LOG_PROGRAM || currentLogType == LOG_IOS || currentLogType == LOG_ANDROID)
         {
-            item = new QStandardItem(recordlist.at(i).number);
+            item = new QStandardItem(itemList.at(itemList.size() - 2));
             item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
             list << item;
         }
-        //list << new QStandardItem(recordlist.at(i).line_number);
-        list << new QStandardItem(recordlist.at(i).data);
+        //list << new QStandardItem(itemList.line_number);
+        list << new QStandardItem(itemList.at(itemList.size() - 1));
 
         model->insertRow(i, list);
 
@@ -561,8 +562,11 @@ void ScholarLogViewer::on_cbxInfoType_currentIndexChanged(const QString &arg1)
     }
     else
     {
-        displayLogInfo(recordTypeMap[arg1]);
-        pCurrentList = &recordTypeMap[arg1];
+        if (!recordTypeMap.isEmpty() && recordTypeMap.contains(arg1))
+        {
+            displayLogInfo(recordTypeMap[arg1]);
+            pCurrentList = &recordTypeMap[arg1];
+        }
     }
 }
 
@@ -593,19 +597,19 @@ void ScholarLogViewer::slot_onSearchWithKey(const QString &key)
         key2 = key.section("! ", 1);
     }
 
-    QList<struct LogRecordStruct> resultList;
+    QList<QStringList> resultList;
     for (auto item : *pCurrentList)
     {
         if (!isExcluds)
         {
-            if (item.name.contains(key, Qt::CaseInsensitive) || item.data.contains(key, Qt::CaseInsensitive))
+            if (item.at(item.size() - 2).contains(key, Qt::CaseInsensitive) || item.at(item.size() - 1).contains(key, Qt::CaseInsensitive))
             {
                 resultList.append(item);
             }
         }
         else
         {
-            if (!item.name.contains(key2, Qt::CaseInsensitive) && !item.data.contains(key2, Qt::CaseInsensitive))
+            if (!item.at(item.size() - 2).contains(key2, Qt::CaseInsensitive) && !item.at(item.size() - 1).contains(key2, Qt::CaseInsensitive))
                 resultList.append(item);
         }
     }

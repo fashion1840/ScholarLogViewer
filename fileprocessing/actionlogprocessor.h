@@ -17,12 +17,12 @@ public:
     LogFileTypeEnum getLogType() override;
     QList<QString> &getLogRecordList() override;
     QString getLastError() const override;
-    bool getItemRecord(QList<LogRecordStruct> &recordItemsList) override;
+    bool getItemRecord(QList<QStringList> &recordItemsList) override;
     TypeRecordMap &getRecordTypeMap() override;
 
 private:
     void cleanData(QList<QString> &list);
-    void creatLogTypeInfo(const QList<LogRecordStruct> &recordList);
+    void creatLogTypeInfo(const QList<QStringList> &recordList);
 
 private:
     QString logFileName; //日志文件名

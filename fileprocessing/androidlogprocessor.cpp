@@ -76,13 +76,16 @@ QList<QString> &AndroidLogProcessor::getLogRecordList()
     return logLineList;
 }
 
-bool AndroidLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
+bool AndroidLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
 {
     if (logLineList.isEmpty())
     {
         lastErrorMsg = "Null";
         return false;
     }
+
+    QStringList temp = logLineList[0].split(ANDROID_STRING_SEPARATOR, QString::SkipEmptyParts);
+    int size = temp.size();
 
     //通过第一行log判断，分离出来的字段数不为5的判定为不支持的日志格式文件
     if (logLineList[0].split(ANDROID_STRING_SEPARATOR, QString::SkipEmptyParts).size() < ANDROID_LOG_ITEM_SIZE)
@@ -101,20 +104,17 @@ bool AndroidLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
             continue;
         }
 
-        struct LogRecordStruct item;
-        int startNum = 1;
-        if (list[0].contains("|"))
-            startNum = 2;
+        QStringList item;
 
-        item.time = QString("%1 %2").arg(list[0]).arg(list[2]);
-        item.type = list[3].mid(1, 1);
+        item << QString("%1 %2").arg(list[0]).arg(list[2]);
+        item << list[3].mid(1, 1);
 
         int idx = str.indexOf(list[3]);
         QStringList subList = str.mid(idx + list[3].size() + 1).split("\t");
-        item.id = subList[0].remove("[").remove("]");
-        item.name = subList[1].remove("[").remove("]");
-        item.number = subList[2];
-        item.data = subList[3];
+        item << subList[0].remove("[").remove("]");
+        item << subList[1].remove("[").remove("]");
+        item << subList[2];
+        item << subList[3];
 
         recordItemsList.append(item);
 
@@ -159,49 +159,49 @@ void AndroidLogProcessor::cleanData(QList<QString> &list)
         list.removeLast();
 }
 
-void AndroidLogProcessor::creatLogTypeInfo(const LogRecordStruct &record)
+void AndroidLogProcessor::creatLogTypeInfo(const QStringList &record)
 {
-
-    if (record.type == "I")
+    QString type = record.at(1);
+    if (type == "I")
     {
         if (recordTypeMap.contains("Info"))
             recordTypeMap["Info"].append(record);
         else
         {
-            QList<struct LogRecordStruct> value;
+            QList<QStringList> value;
             value.append(record);
             recordTypeMap.insert("Info", value);
         }
     }
-    else if (record.type == "D")
+    else if (type == "D")
     {
         if (recordTypeMap.contains("Debug"))
             recordTypeMap["Debug"].append(record);
         else
         {
-            QList<struct LogRecordStruct> value;
+            QList<QStringList> value;
             value.append(record);
             recordTypeMap.insert("Debug", value);
         }
     }
-    else if (record.type == "W")
+    else if (type == "W")
     {
         if (recordTypeMap.contains("Warning"))
             recordTypeMap["Warning"].append(record);
         else
         {
-            QList<struct LogRecordStruct> value;
+            QList<QStringList> value;
             value.append(record);
             recordTypeMap.insert("Warning", value);
         }
     }
-    else if (record.type == "E")
+    else if (type == "E")
     {
         if (recordTypeMap.contains("Error"))
             recordTypeMap["Error"].append(record);
         else
         {
-            QList<struct LogRecordStruct> value;
+            QList<QStringList> value;
             value.append(record);
             recordTypeMap.insert("Error", value);
         }

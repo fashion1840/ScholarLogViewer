@@ -76,7 +76,7 @@ QList<QString> &IosLogProcessor::getLogRecordList()
     return logLineList;
 }
 
-bool IosLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
+bool IosLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
 {
     if (logLineList.isEmpty())
     {
@@ -101,16 +101,16 @@ bool IosLogProcessor::getItemRecord(QList<LogRecordStruct> &recordItemsList)
             continue;
         }
 
-        struct LogRecordStruct item;
-        item.time = QString("%1 %2").arg(list[3]).arg(list[4]);
+        QStringList item;
+        item << QString("%1 %2").arg(list[3]).arg(list[4]);
         QString t = list[1].section("|", 1);
-        item.type = t.remove(":");
-        if (item.type.isEmpty())
+        item << t.remove(":");
+        if (item.at(1).isEmpty())
             continue;
-        item.id = list[5];
-        item.name = list[6];
-        item.number = list[7];
-        item.data = str.section(" ", 8, -1, QString::SectionSkipEmpty);
+        item << list[5];
+        item << list[6];
+        item << list[7];
+        item << str.section(" ", 8, -1, QString::SectionSkipEmpty);
 
         recordItemsList.append(item);
 
@@ -155,10 +155,10 @@ void IosLogProcessor::cleanData(QList<QString> &list)
         list.removeLast();
 }
 
-void IosLogProcessor::creatLogTypeInfo(const QList<LogRecordStruct> &recordList)
+void IosLogProcessor::creatLogTypeInfo(const QList<QStringList> &recordList)
 {
     for (auto item : recordList)
     {
-        recordTypeMap[item.type].append(item);
+        recordTypeMap[item.at(1)].append(item);
     }
 }

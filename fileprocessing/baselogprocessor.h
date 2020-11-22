@@ -21,7 +21,7 @@ public:
 
     virtual QList<QString> &getLogRecordList() = 0;
 
-    virtual bool getItemRecord(QList<LogRecordStruct> &recordItemsList) = 0;
+    virtual bool getItemRecord(QList<QStringList> &recordItemsList) = 0;
 
     virtual TypeRecordMap &getRecordTypeMap() = 0;
 

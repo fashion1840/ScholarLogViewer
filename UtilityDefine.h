@@ -8,7 +8,7 @@ const int PROGRAM_LOG_ITEM_SIZE = 5;            //程序日志行字段数
 const QString PROGRAM_STRING_SEPARATOR = " - "; //程序日志分割符
 
 //Android平台日志定义
-const int ANDROID_LOG_ITEM_SIZE = 6;          //程序日志行字段数
+const int ANDROID_LOG_ITEM_SIZE = 5;          //程序日志行字段数
 const QString ANDROID_STRING_SEPARATOR = " "; //程序日志分割符
 
 //iOS平台日志定义
@@ -41,7 +41,7 @@ enum LogFileTypeEnum
     LOG_EVENT        //事件日志
 };
 
-typedef QMap<QString, QList<struct LogRecordStruct>> TypeRecordMap;
+typedef QMap<QString, QList<QStringList>> TypeRecordMap;
 
 enum WaitTipsEnum
 {
