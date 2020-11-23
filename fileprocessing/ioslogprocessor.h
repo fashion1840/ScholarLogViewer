@@ -1,14 +1,14 @@
-﻿#ifndef PROGRAMLOGPROCESSOR_H
-#define PROGRAMLOGPROCESSOR_H
+﻿#ifndef IOSLOGPROCESSOR_H
+#define IOSLOGPROCESSOR_H
 
 #include "baselogprocessor.h"
 #include <QList>
 
-class ProgramLogProcessor : public BaseLogProcessor
+class IosLogProcessor : public BaseLogProcessor
 {
 public:
-    explicit ProgramLogProcessor();
-    ~ProgramLogProcessor() override;
+    explicit IosLogProcessor();
+    ~IosLogProcessor() override;
 
     bool openLogFile(const QString &logName) override;
     QString getFileName() override;
@@ -22,7 +22,7 @@ public:
 
 private:
     void cleanData(QList<QString> &list);
-    void creatLogTypeInfo(const QStringList &record);
+    void creatLogTypeInfo(const QList<QStringList> &recordList);
 
 private:
     QString logFileName; //日志文件名
@@ -34,4 +34,4 @@ private:
     TypeRecordMap recordTypeMap; //分日志类型保存信息
 };
 
-#endif // PROGRAMLOGPROCESSOR_H
+#endif // IOSLOGPROCESSOR_H

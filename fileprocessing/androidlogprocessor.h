@@ -1,14 +1,14 @@
-﻿#ifndef PROGRAMLOGPROCESSOR_H
-#define PROGRAMLOGPROCESSOR_H
+﻿#ifndef ANDROIDLOGPROCESSOR_H
+#define ANDROIDLOGPROCESSOR_H
 
 #include "baselogprocessor.h"
 #include <QList>
 
-class ProgramLogProcessor : public BaseLogProcessor
+class AndroidLogProcessor : public BaseLogProcessor
 {
 public:
-    explicit ProgramLogProcessor();
-    ~ProgramLogProcessor() override;
+    explicit AndroidLogProcessor();
+    ~AndroidLogProcessor() override;
 
     bool openLogFile(const QString &logName) override;
     QString getFileName() override;
@@ -34,4 +34,4 @@ private:
     TypeRecordMap recordTypeMap; //分日志类型保存信息
 };
 
-#endif // PROGRAMLOGPROCESSOR_H
+#endif // ANDROIDLOGPROCESSOR_H

@@ -1,15 +1,15 @@
-﻿#include "programlogprocessor.h"
+﻿#include "androidlogprocessor.h"
 
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
 
-ProgramLogProcessor::ProgramLogProcessor() {}
+AndroidLogProcessor::AndroidLogProcessor() {}
 
-ProgramLogProcessor::~ProgramLogProcessor() {}
+AndroidLogProcessor::~AndroidLogProcessor() {}
 
-bool ProgramLogProcessor::openLogFile(const QString &logName)
+bool AndroidLogProcessor::openLogFile(const QString &logName)
 {
     QFile fp(logName);
     if (!fp.exists())
@@ -51,32 +51,32 @@ bool ProgramLogProcessor::openLogFile(const QString &logName)
     return true;
 }
 
-QString ProgramLogProcessor::getFileName()
+QString AndroidLogProcessor::getFileName()
 {
     return logFileName;
 }
 
-QString ProgramLogProcessor::getFilePath()
+QString AndroidLogProcessor::getFilePath()
 {
     return logFilePath;
 }
 
-QString ProgramLogProcessor::getFileDir()
+QString AndroidLogProcessor::getFileDir()
 {
     return logFileDir;
 }
 
-LogFileTypeEnum ProgramLogProcessor::getLogType()
+LogFileTypeEnum AndroidLogProcessor::getLogType()
 {
     return logType;
 }
 
-QList<QString> &ProgramLogProcessor::getLogRecordList()
+QList<QString> &AndroidLogProcessor::getLogRecordList()
 {
     return logLineList;
 }
 
-bool ProgramLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
+bool AndroidLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
 {
     if (logLineList.isEmpty())
     {
@@ -84,8 +84,11 @@ bool ProgramLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
         return false;
     }
 
+    QStringList temp = logLineList[0].split(ANDROID_STRING_SEPARATOR, QString::SkipEmptyParts);
+    int size = temp.size();
+
     //通过第一行log判断，分离出来的字段数不为5的判定为不支持的日志格式文件
-    if (logLineList[0].split(PROGRAM_STRING_SEPARATOR, QString::SkipEmptyParts).size() < PROGRAM_LOG_ITEM_SIZE)
+    if (logLineList[0].split(ANDROID_STRING_SEPARATOR, QString::SkipEmptyParts).size() < ANDROID_LOG_ITEM_SIZE)
     {
         lastErrorMsg = "Is not support format file.";
         return false;
@@ -93,28 +96,25 @@ bool ProgramLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
 
     for (int i = 0; i < logLineList.size(); i++)
     {
-        QStringList list = logLineList.at(i).split(PROGRAM_STRING_SEPARATOR, QString::SkipEmptyParts);
-        if (list.size() < PROGRAM_LOG_ITEM_SIZE)
+        QString str = logLineList.at(i);
+        QStringList list = str.split(ANDROID_STRING_SEPARATOR, QString::SkipEmptyParts);
+        if (list.size() < ANDROID_LOG_ITEM_SIZE)
         {
             qInfo() << "Error record:" << logLineList.at(i);
             continue;
         }
 
         QStringList item;
-        int startNum = 1;
-        if (list[0].contains("|"))
-            startNum = 2;
 
-        item << list[0].section(" ", startNum);
-        item << list[1].trimmed();
-        item << list[2].trimmed();
-        int idx = list[3].lastIndexOf(":");
-        item << list[3].left(idx);
-        item << list[3].right(list[3].size() - idx - 1);
-        if (list.size() > PROGRAM_LOG_ITEM_SIZE)
-            item << logLineList.at(i).section(PROGRAM_STRING_SEPARATOR, 4);
-        else
-            item << list[4].trimmed();
+        item << QString("%1 %2").arg(list[0]).arg(list[2]);
+        item << list[3].mid(1, 1);
+
+        int idx = str.indexOf(list[3]);
+        QStringList subList = str.mid(idx + list[3].size() + 1).split("\t");
+        item << subList[0].remove("[").remove("]");
+        item << subList[1].remove("[").remove("]");
+        item << subList[2];
+        item << subList[3];
 
         recordItemsList.append(item);
 
@@ -127,17 +127,17 @@ bool ProgramLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
     return true;
 }
 
-QString ProgramLogProcessor::getLastError() const
+QString AndroidLogProcessor::getLastError() const
 {
     return lastErrorMsg;
 }
 
-TypeRecordMap &ProgramLogProcessor::getRecordTypeMap()
+TypeRecordMap &AndroidLogProcessor::getRecordTypeMap()
 {
     return recordTypeMap;
 }
 
-void ProgramLogProcessor::cleanData(QList<QString> &list)
+void AndroidLogProcessor::cleanData(QList<QString> &list)
 {
     if (list.isEmpty())
         return;
@@ -159,7 +159,7 @@ void ProgramLogProcessor::cleanData(QList<QString> &list)
         list.removeLast();
 }
 
-void ProgramLogProcessor::creatLogTypeInfo(const QStringList &record)
+void AndroidLogProcessor::creatLogTypeInfo(const QStringList &record)
 {
     QString type = record.at(1);
     if (type == "I")

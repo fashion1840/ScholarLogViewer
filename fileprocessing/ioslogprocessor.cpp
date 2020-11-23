@@ -1,14 +1,15 @@
-﻿#include "actionlogprocessor.h"
+﻿#include "ioslogprocessor.h"
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
 
-ActionLogProcessor::ActionLogProcessor() {}
+IosLogProcessor::IosLogProcessor() {}
 
-ActionLogProcessor::~ActionLogProcessor() {}
+IosLogProcessor::~IosLogProcessor() {}
 
-bool ActionLogProcessor::openLogFile(const QString &logName)
+bool IosLogProcessor::openLogFile(const QString &logName)
 {
     QFile fp(logName);
     if (!fp.exists())
@@ -30,6 +31,7 @@ bool ActionLogProcessor::openLogFile(const QString &logName)
     }
 
     logLineList.clear();
+    recordTypeMap.clear();
 
     while (!fp.atEnd())
     {
@@ -37,6 +39,9 @@ bool ActionLogProcessor::openLogFile(const QString &logName)
         if (txt.isEmpty())
             continue;
         logLineList << txt;
+
+        //TODO:防止界面疆死
+        QCoreApplication::processEvents();
     }
 
     fp.close();
@@ -46,32 +51,32 @@ bool ActionLogProcessor::openLogFile(const QString &logName)
     return true;
 }
 
-QString ActionLogProcessor::getFileName()
+QString IosLogProcessor::getFileName()
 {
     return logFileName;
 }
 
-QString ActionLogProcessor::getFilePath()
+QString IosLogProcessor::getFilePath()
 {
     return logFilePath;
 }
 
-QString ActionLogProcessor::getFileDir()
+QString IosLogProcessor::getFileDir()
 {
     return logFileDir;
 }
 
-LogFileTypeEnum ActionLogProcessor::getLogType()
+LogFileTypeEnum IosLogProcessor::getLogType()
 {
     return logType;
 }
 
-QList<QString> &ActionLogProcessor::getLogRecordList()
+QList<QString> &IosLogProcessor::getLogRecordList()
 {
     return logLineList;
 }
 
-bool ActionLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
+bool IosLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
 {
     if (logLineList.isEmpty())
     {
@@ -80,36 +85,37 @@ bool ActionLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
     }
 
     //通过第一行log判断，分离出来的字段数不为5的判定为不支持的日志格式文件
-    if (logLineList[0].split(ACTION_STRING_SEPARATOR).size() < ACTION_LOG_ITEM_SIZE)
+    if (logLineList[0].split(IOS_STRING_SEPARATOR, QString::SkipEmptyParts).size() < IOS_LOG_ITEM_SIZE)
     {
-
         lastErrorMsg = "Is not support format file.";
-
         return false;
     }
 
     for (int i = 0; i < logLineList.size(); i++)
     {
-        QStringList list = logLineList.at(i).split(ACTION_STRING_SEPARATOR);
-        if (list.size() < ACTION_LOG_ITEM_SIZE)
+        QString str = logLineList.at(i);
+        QStringList list = str.split(IOS_STRING_SEPARATOR, QString::SkipEmptyParts);
+        if (list.size() < IOS_LOG_ITEM_SIZE)
         {
             qInfo() << "Error record:" << logLineList.at(i);
             continue;
         }
 
         QStringList item;
-
-        item << list[0].section("|", 0, 0).trimmed();
-        item << list[1].trimmed();
-        item << list[3].trimmed();
+        item << QString("%1 %2").arg(list[3]).arg(list[4]);
+        QString t = list[1].section("|", 1);
+        item << t.remove(":");
+        if (item.at(1).isEmpty())
+            continue;
         item << list[5];
-        item << "0";
-        if (list.size() > ACTION_LOG_ITEM_SIZE)
-            item << logLineList.at(i).section(ACTION_STRING_SEPARATOR, 6);
-        else
-            item << list[6].trimmed();
+        item << list[6];
+        item << list[7];
+        item << str.section(" ", 8, -1, QString::SectionSkipEmpty);
 
         recordItemsList.append(item);
+
+        //TODO:防止界面疆死
+        QCoreApplication::processEvents();
     }
 
     creatLogTypeInfo(recordItemsList);
@@ -117,17 +123,17 @@ bool ActionLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
     return true;
 }
 
-QString ActionLogProcessor::getLastError() const
+QString IosLogProcessor::getLastError() const
 {
     return lastErrorMsg;
 }
 
-TypeRecordMap &ActionLogProcessor::getRecordTypeMap()
+TypeRecordMap &IosLogProcessor::getRecordTypeMap()
 {
     return recordTypeMap;
 }
 
-void ActionLogProcessor::cleanData(QList<QString> &list)
+void IosLogProcessor::cleanData(QList<QString> &list)
 {
     if (list.isEmpty())
         return;
@@ -149,7 +155,7 @@ void ActionLogProcessor::cleanData(QList<QString> &list)
         list.removeLast();
 }
 
-void ActionLogProcessor::creatLogTypeInfo(const QList<QStringList> &recordList)
+void IosLogProcessor::creatLogTypeInfo(const QList<QStringList> &recordList)
 {
     for (auto item : recordList)
     {
