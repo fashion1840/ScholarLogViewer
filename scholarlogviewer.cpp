@@ -220,8 +220,7 @@ bool ScholarLogViewer::eventFilter(QObject *obj, QEvent *event)
 ///
 void ScholarLogViewer::on_btnMinimize_clicked()
 {
-    //    this->showMinimized();
-    setWindowState(Qt::WindowMinimized);
+    this->showMinimized();
 }
 
 ///
