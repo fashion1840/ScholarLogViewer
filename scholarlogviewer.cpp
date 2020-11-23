@@ -222,8 +222,7 @@ bool ScholarLogViewer::eventFilter(QObject *obj, QEvent *event)
 ///
 void ScholarLogViewer::on_btnMinimize_clicked()
 {
-    //    this->showMinimized();
-    setWindowState(Qt::WindowMinimized);
+    this->showMinimized();
 }
 
 ///
@@ -766,4 +765,9 @@ void ScholarLogViewer::on_btnFormat_clicked()
         return;
 
     ui->itemContent->setText(jsonStr);
+}
+
+void ScholarLogViewer::on_btnAbout_clicked()
+{
+    QMessageBox::about(this, QStringLiteral("关于"), QStringLiteral("当前程序版号：1.0.8 (20201123)"));
 }

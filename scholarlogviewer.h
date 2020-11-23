@@ -63,6 +63,8 @@ private slots:
 
     void on_btnFormat_clicked();
 
+    void on_btnAbout_clicked();
+
 protected:
 #ifdef Q_OS_MAC
     void mouseMoveEvent(QMouseEvent *event) override;
