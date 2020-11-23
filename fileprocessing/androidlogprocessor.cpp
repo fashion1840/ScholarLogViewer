@@ -80,12 +80,9 @@ bool AndroidLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
 {
     if (logLineList.isEmpty())
     {
-        lastErrorMsg = "Null";
+        lastErrorMsg = "NULL";
         return false;
     }
-
-    QStringList temp = logLineList[0].split(ANDROID_STRING_SEPARATOR, QString::SkipEmptyParts);
-    int size = temp.size();
 
     //通过第一行log判断，分离出来的字段数不为5的判定为不支持的日志格式文件
     if (logLineList[0].split(ANDROID_STRING_SEPARATOR, QString::SkipEmptyParts).size() < ANDROID_LOG_ITEM_SIZE)
