@@ -1,5 +1,6 @@
 ﻿#include "actionlogprocessor.h"
 
+#include <QDateTime>
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
@@ -80,34 +81,63 @@ bool ActionLogProcessor::getItemRecord(QList<QStringList> &recordItemsList)
     }
 
     //通过第一行log判断，分离出来的字段数不为5的判定为不支持的日志格式文件
-    if (logLineList[0].split(ACTION_STRING_SEPARATOR).size() < ACTION_LOG_ITEM_SIZE)
+    int listSize = logLineList[0].split(ACTION_STRING_SEPARATOR).size();
+    if (listSize < ACTION_LOG_ITEM_SIZE_FIRST)
     {
-
         lastErrorMsg = "Is not support format file.";
-
         return false;
     }
 
     for (int i = 0; i < logLineList.size(); i++)
     {
         QStringList list = logLineList.at(i).split(ACTION_STRING_SEPARATOR);
-        if (list.size() < ACTION_LOG_ITEM_SIZE)
+        bool isExpand = false;
+        if (list[0].contains("|"))
+            isExpand = true;
+
+        if (isExpand)
         {
-            qInfo() << "Error record:" << logLineList.at(i);
-            continue;
+            if (list.size() < ACTION_LOG_ITEM_SIZE_SECOND)
+            {
+                qInfo() << "Error record:" << logLineList.at(i);
+                continue;
+            }
+        }
+        else
+        {
+            if (list.size() < ACTION_LOG_ITEM_SIZE_FIRST)
+            {
+                qInfo() << "Error record:" << logLineList.at(i);
+                continue;
+            }
         }
 
         QStringList item;
 
-        item << list[0].section("|", 0, 0).trimmed();
-        item << list[1].trimmed();
-        item << list[3].trimmed();
-        item << list[5];
-        item << "0";
-        if (list.size() > ACTION_LOG_ITEM_SIZE)
-            item << logLineList.at(i).section(ACTION_STRING_SEPARATOR, 6);
+        if (isExpand)
+        {
+            item << list[0].section("|", 0, 0).trimmed();
+            item << list[1].trimmed();
+            item << list[3].trimmed();
+            item << list[5];
+            if (list.size() > ACTION_LOG_ITEM_SIZE_SECOND)
+                item << logLineList.at(i).section(ACTION_STRING_SEPARATOR, 6);
+            else
+                item << list[6].trimmed();
+        }
         else
-            item << list[6].trimmed();
+        {
+            QDateTime time = QDateTime::fromMSecsSinceEpoch(list[3].toLongLong()); //时间戳-毫秒级
+            QString strStartTime = time.toString("yyyy-mm-dd hh:mm:ss");
+            item << strStartTime;
+            item << list[0].trimmed();
+            item << list[2].trimmed();
+            item << list[4].trimmed();
+            if (list.size() > ACTION_LOG_ITEM_SIZE_FIRST)
+                item << logLineList.at(i).section(ACTION_STRING_SEPARATOR, 5);
+            else
+                item << list[5].trimmed();
+        }
 
         recordItemsList.append(item);
     }

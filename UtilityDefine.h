@@ -16,7 +16,8 @@ const int IOS_LOG_ITEM_SIZE = 8;          //程序日志行字段数
 const QString IOS_STRING_SEPARATOR = " "; //程序日志分割符
 
 //ACTION日志定义
-const int ACTION_LOG_ITEM_SIZE = 7;          //打点日志行字段数
+const int ACTION_LOG_ITEM_SIZE_FIRST = 6; //打点日志行字段数
+const int ACTION_LOG_ITEM_SIZE_SECOND = 7;
 const QString ACTION_STRING_SEPARATOR = ","; //打点日志分割符
 
 ///

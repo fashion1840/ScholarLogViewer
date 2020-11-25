@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPainter>
+#include <QTextCodec>
 #include <QTimer>
 
 #include "CommonHelper.h"
